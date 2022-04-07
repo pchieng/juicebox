@@ -3,15 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const apiRouter = express.Router();
 
-const usersRouter = require('./users');
-apiRouter.use('/users', usersRouter);
-
-const postsRouter = require('./posts');
-apiRouter.use('/posts', postsRouter);
-
-const tagsRouter = require('./tags');
-apiRouter.use('/tags', tagsRouter);
-
 const jwt = require('jsonwebtoken');
 const { getUserById } = require('../db');
 const { JWT_SECRET } = process.env;
@@ -19,12 +10,12 @@ const { JWT_SECRET } = process.env;
 apiRouter.use(async (req, res, next) => {
     const prefix = 'Bearer ';
     const auth = req.header('Authorization');
-  
+    console.log("Started")
     if (!auth) {
       next();
     } else if (auth.startsWith(prefix)) {
       const token = auth.slice(prefix.length);
-  
+      console.log(token);
       try {
         const { id } = jwt.verify(token, JWT_SECRET);
   
@@ -49,6 +40,15 @@ apiRouter.use(async (req, res, next) => {
     }
     next();
   });
+
+  const usersRouter = require('./users');
+  apiRouter.use('/users', usersRouter);
+  
+  const postsRouter = require('./posts');
+  apiRouter.use('/posts', postsRouter);
+  
+  const tagsRouter = require('./tags');
+  apiRouter.use('/tags', tagsRouter);
 
 apiRouter.use((error, req, res, next) => {
     res.send({

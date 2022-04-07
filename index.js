@@ -11,10 +11,11 @@ server.use(express.json())
 const { client } = require('./db');
 client.connect();
 
+server.use('/api', apiRouter);
+
 server.listen(PORT, () => {
     console.log('The server is up on port', PORT)
 });
 
 
-server.use('/api', apiRouter);
 
