@@ -11,6 +11,7 @@ server.use(express.json())
 const { client } = require('./db');
 client.connect();
 
+
 server.use('/api', apiRouter);
 
 server.listen(PORT, () => {
